@@ -77,6 +77,16 @@
         margin-top: 10px;
         border-radius: 8px;
     }
+
+    #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11000 !important; /* pastikan lebih tinggi dari SweetAlert */
+    pointer-events: none;
+    }
   </style>
 </head>
 <body class="gradient-bg min-h-screen flex items-center justify-center text-white relative overflow-hidden">
@@ -218,74 +228,77 @@ function cekKelulusan() {
     const siswa = dataKelulusan[nis];
 
     if (siswa.lulus) {
-  Swal.fire({
-    title: '',
-    html: `
-      <div style="
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(to bottom right, #e6f4ea, #ffffff);
-        padding: 10px;
-        border-radius: 12px;
-        color: #065f46;
-        text-align: center;
-      ">
-        <div style="margin-bottom: 16px;">
-          <div style="font-size: 48px;">🎓</div>
-          <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Selamat, Anda Lulus!</h2>
-          <p style="font-size: 16px; font-weight: 600; color: #064e3b; margin: 2px 0;">MTs NU Al Hidayah</p>
-          <p style="font-size: 15px; color: #064e3b;">Tahun Ajaran 2024/2025</p>
-        </div>
+  // Putar suara dan efek sebelum modal muncul
+  audioMercon.currentTime = 0;
+  audioMercon.play();
+  efekMerconKertas();
 
-        <div style="margin: 20px auto;">
-          <div style="
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            padding: 5px;
-            background: linear-gradient(135deg, #16a34a, #4ade80);
-            margin: 0 auto;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-          ">
-            <img src="${siswa.foto}" alt="Foto Siswa" style="
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
+  // Tampilkan modal setelah delay singkat agar efek jalan dulu
+  setTimeout(() => {
+    Swal.fire({
+      title: '',
+      html: `
+        <div style="
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(to bottom right, #e6f4ea, #ffffff);
+          padding: 10px;
+          border-radius: 12px;
+          color: #065f46;
+          text-align: center;
+        ">
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 48px;">🎓</div>
+            <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Selamat, Anda Lulus!</h2>
+            <p style="font-size: 16px; font-weight: 600; color: #064e3b; margin: 2px 0;">MTs NU Al Hidayah</p>
+            <p style="font-size: 15px; color: #064e3b;">Tahun Ajaran 2024/2025</p>
+          </div>
+
+          <div style="margin: 20px auto;">
+            <div style="
+              width: 100px;
+              height: 100px;
               border-radius: 50%;
-              border: 3px solid #fff;
+              padding: 5px;
+              background: linear-gradient(135deg, #16a34a, #4ade80);
+              margin: 0 auto;
+              box-shadow: 0 4px 16px rgba(0,0,0,0.15);
             ">
+              <img src="${siswa.foto}" alt="Foto Siswa" style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 3px solid #fff;
+              ">
+            </div>
+          </div>
+
+          <div style="
+            margin-top: 5px;
+            padding: 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.6);
+            display: inline-block;
+            text-align: left;
+            font-size: 15px;
+            color: #064e3b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          ">
+            <p><strong>Nama:</strong> ${siswa.nama}</p>
+            <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
+            <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
+            <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
+            <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
           </div>
         </div>
-
-        <div style="
-          margin-top: 5px;
-          padding: 16px;
-          border-radius: 12px;
-          backdrop-filter: blur(8px);
-          background: rgba(255, 255, 255, 0.6);
-          display: inline-block;
-          text-align: left;
-          font-size: 15px;
-          color: #064e3b;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        ">
-          <p><strong>Nama:</strong> ${siswa.nama}</p>
-          <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
-          <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
-          <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
-          <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
-        </div>
-      </div>
-    `,
-    confirmButtonText: '🎉 Tutup',
-    confirmButtonColor: '#16a34a',
-    background: '#ecfdf5',
-    width: 480,
-    didOpen: () => {
-      audioMercon.currentTime = 0;
-      audioMercon.play();
-      efekMerconKertas();
-    }
-  });
+      `,
+      confirmButtonText: '🎉 Tutup',
+      confirmButtonColor: '#16a34a',
+      background: '#ecfdf5',
+      width: 480
+    });
+  }, 500); // delay setengah detik agar efek terasa lebih dahulu
 } else {
       // POPUP GAK LULUS WARNA MERAH
       Swal.fire({
