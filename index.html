@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kelulusan MTS NU Al Hidayah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    @keyframes gradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .gradient-bg {
+      background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #fddb92);
+      background-size: 300% 300%;
+      animation: gradient 15s ease infinite;
+    }
+    .bg-mts {
+      background-image: url('img/gedung-mts.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.25;
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+    .swal-custom {
+    font-family: 'Segoe UI', sans-serif;
+    }
+
+    .swal-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: left;
+    }
+
+    .swal-nama {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1e3a8a;
+        margin-bottom: 10px;
+    }
+
+    .swal-info p {
+        margin: 4px 0;
+        font-size: 14px;
+    }
+
+    .swal-daftar {
+        margin-top: 20px;
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .swal-daftar a {
+        display: block;
+        margin: 10px 0;
+        color: #2563eb;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .swal-daftar img {
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+
+  <!-- Background -->
+  <div class="bg-mts"></div>
+
+  <!-- Confetti -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <canvas id="confetti-canvas" class="w-full h-full"></canvas>
+  </div>
+
+  <!-- Konten Utama -->
+  <div class="z-10 text-center p-6 md:p-8 mx-4 backdrop-blur-md bg-white/10 rounded-3xl shadow-2xl max-w-2xl w-full">
+    <img src="img/mts.png" class="w-20 md:w-24 mx-auto mb-4 drop-shadow-lg" alt="Logo NU">
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-2 drop-shadow-md">🎓 MTs NU Al Hidayah</h1>
+    <p class="text-base md:text-xl font-medium mb-6">Pengumuman Kelulusan Tahun 2024/2025</p>
+
+    <!-- Countdown -->
+    <div id="countdown-section" class="text-center mb-6">
+      <p class="text-lg md:text-xl mb-2 font-semibold">Waktu Menuju Pengumuman:</p>
+      <div id="countdown" class="text-3xl md:text-4xl font-bold tracking-widest bg-white/20 px-6 py-4 rounded-xl backdrop-blur-sm border border-white/30 inline-block shadow-lg">
+        Loading...
+      </div>
+    </div>
+
+    <!-- Form NIS -->
+    <div id="form-nis" class="hidden mt-6">
+      <label for="nis" class="block text-lg font-semibold mb-2">Masukkan NIS Anda:</label>
+      <input type="text" id="nis" class="w-full px-4 py-2 rounded-xl text-black text-center font-bold focus:outline-none" placeholder="Contoh: 1234567890" autofocus>
+      <button onclick="cekKelulusan()" 
+        class="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 rounded-xl font-bold shadow-lg"
+        style="font-family: 'Poppins', sans-serif;"
+        >
+        <i class="fas fa-search mr-2"></i> Cek Kelulusan
+        </button>
+    </div>
+
+    <p class="text-white text-sm italic mt-4">Silakan kunjungi kembali saat waktu pengumuman tiba 🎉</p>
+    <p class="text-xs text-white/80 mt-8 italic">Dibuat oleh <strong>Tim IT YAPIM</strong> – Yayasan Pendidikan Islam Manafi'ul Ulum</p>
+  </div>
+
+  <!-- Countdown Script -->
+  <script>
+    const targetDate = new Date("2025-06-02T10:00:00").getTime(); // Atur waktu pengumuman
+    const countdown = document.getElementById("countdown");
+    const formNis = document.getElementById("form-nis");
+    const sectionCountdown = document.getElementById("countdown-section");
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        clearInterval(timer);
+        countdown.innerHTML = "🎉 Pengumuman Sudah Tersedia!";
+        countdown.classList.add("text-green-300");
+        formNis.classList.remove("hidden");
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        countdown.innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
+      }
+    }, 1000);
+  </script>
+
+  <!-- Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const canvas = document.getElementById('confetti-canvas');
+    const confetti = window.confetti.create(canvas, { resize: true, useWorker: true });
+
+    setInterval(() => {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 100,
+        origin: { x: 0 },
+        colors: ['#ff6ec4', '#7873f5', '#fddb92']
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 100,
+        origin: { x: 1 },
+        colors: ['#42e695', '#fddb92', '#ff6ec4']
+      });
+    }, 500);
+  </script>
+
+  <!-- Kelulusan Pop-up -->
+  <script>
+    const dataKelulusan = {
+  "123456": {
+    nama: "Fachri Shofiyyuddin Ahmad",
+    tgl_lahir: "28 Mei 2000",
+    asal_sekolah: "MTs NU Al Hidayah Kudus",
+    kota: "Semarang",
+    provinsi: "Jawa Tengah",
+    foto: "https://media.licdn.com/dms/image/v2/D5603AQERB3tSNqFatA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1699941081332?e=1752710400&v=beta&t=G0ZuGo8tkMxyQnCfj8dwJIzps65YgWgv7umFAJwuKmI",
+    lulus: true  // <--- properti lulus di sini
+  },
+
+  "654321": {
+    nama: "Keira Amalia",
+    tgl_lahir: "1 Januari 2001",
+    asal_sekolah: "MTs NU Al Hidayah Kudus",
+    kota: "Jakarta Selatan",
+    provinsi: "DKI Jakarta",
+    foto: "https://i.pinimg.com/736x/3f/b2/84/3fb2846c21ed34306837bea8d9529753.jpg",
+    lulus: false  // siswa ini tidak lulus
+  }
+};
+
+
+
+    // Audio efek ledakan mercon (bisa ganti link sesuai kebutuhan)
+const audioMercon = new Audio('audio/mercon.mp3');
+
+// Confetti kertas kotak ala mercon grand opening
+function efekMerconKertas() {
+  confetti({
+    particleCount: 200,
+    spread: 120,
+    ticks: 150,
+    gravity: 0.6,
+    scalar: 1.2,
+    shapes: ['square'],
+    colors: ['#fbbf24', '#f87171', '#3b82f6', '#10b981', '#f59e0b', '#ec4899'],
+    origin: { y: 0.6 },
+  });
+}
+
+function cekKelulusan() {
+  const nis = document.getElementById("nis").value.trim();
+  if (dataKelulusan[nis]) {
+    const siswa = dataKelulusan[nis];
+
+    if (siswa.lulus) {  // misal ada properti lulus: true/false
+      Swal.fire({
+        title: '',
+        html: `
+          <div style="
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #e0f2fe, #ffffff);
+            padding: 10px;
+            border-radius: 12px;
+            color: #1e3a8a;
+            text-align: center;
+          ">
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 48px;">🎓</div>
+              <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Selamat, Anda Lulus!</h2>
+              <p style="font-size: 15px; color: #334155;">Tahun Ajaran 2024/2025</p>
+            </div>
+
+            <div style="margin: 20px auto;">
+              <div style="
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                padding: 5px;
+                background: linear-gradient(135deg, #3b82f6, #60a5fa);
+                margin: 0 auto;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+              ">
+                <img src="${siswa.foto}" alt="Foto Siswa" style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 50%;
+                  border: 3px solid #fff;
+                ">
+              </div>
+            </div>
+
+            <div style="
+              margin-top: 20px;
+              padding: 16px;
+              border-radius: 12px;
+              backdrop-filter: blur(8px);
+              background: rgba(255, 255, 255, 0.6);
+              display: inline-block;
+              text-align: left;
+              font-size: 15px;
+              color: #0f172a;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            ">
+              <p><strong>Nama:</strong> ${siswa.nama}</p>
+              <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
+              <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
+              <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
+              <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
+            </div>
+          </div>
+        `,
+        confirmButtonText: '🎉 Tutup',
+        confirmButtonColor: '#3b82f6',
+        background: '#f0f9ff',
+        width: 480,
+        didOpen: () => {
+          audioMercon.currentTime = 0;
+          audioMercon.play();
+          efekMerconKertas();
+        }
+      });
+    } else {
+      // POPUP GAK LULUS WARNA MERAH
+      Swal.fire({
+        title: '',
+        html: `
+          <div style="
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #fee2e2, #fef2f2);
+            padding: 10px;
+            border-radius: 12px;
+            color: #b91c1c;
+            text-align: center;
+          ">
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 48px;">😞</div>
+              <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Mohon Maaf, Anda Tidak Lulus</h2>
+              <p style="font-size: 15px; color: #991b1b;">Tahun Ajaran 2024/2025</p>
+            </div>
+
+            <div style="margin: 20px auto;">
+              <div style="
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                padding: 5px;
+                background: linear-gradient(135deg, #dc2626, #f87171);
+                margin: 0 auto;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+              ">
+                <img src="${siswa.foto}" alt="Foto Siswa" style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 50%;
+                  border: 3px solid #fff;
+                ">
+              </div>
+            </div>
+
+            <div style="
+              margin-top: 20px;
+              padding: 16px;
+              border-radius: 12px;
+              backdrop-filter: blur(8px);
+              background: rgba(255, 255, 255, 0.6);
+              display: inline-block;
+              text-align: left;
+              font-size: 15px;
+              color: #7f1d1d;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            ">
+              <p><strong>Nama:</strong> ${siswa.nama}</p>
+              <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
+              <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
+              <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
+              <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
+            </div>
+          </div>
+        `,
+        confirmButtonText: 'Tutup',
+        confirmButtonColor: '#b91c1c',
+        background: '#fee2e2',
+        width: 480,
+      });
+    }
+
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'NIS Tidak Ditemukan',
+      text: 'Pastikan NIS yang Anda masukkan benar.',
+      confirmButtonColor: '#ef4444'
+    });
+  }
+}
+
+
+
+
+
+
+
+
+  </script>
+
+</body>
+</html>
