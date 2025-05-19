@@ -114,9 +114,9 @@
     </div>
 
     <!-- Form NIS -->
-    <div id="form-nis" class="hidden mt-6">
-      <label for="nis" class="block text-lg font-semibold mb-2">Masukkan NIS Anda:</label>
-      <input type="text" id="nis" class="w-full px-4 py-2 rounded-xl text-black text-center font-bold focus:outline-none" placeholder="Contoh: 1234567890" autofocus>
+    <div id="form-nisn" class="hidden mt-6">
+      <label for="nisn" class="block text-lg font-semibold mb-2">Masukkan NISN Anda:</label>
+      <input type="text" id="nisn" class="w-full px-4 py-2 rounded-xl text-black text-center font-bold focus:outline-none" placeholder="Contoh: 1234567890" autofocus>
       <button onclick="cekKelulusan()" 
         class="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 rounded-xl font-bold shadow-lg"
         style="font-family: 'Poppins', sans-serif;"
@@ -131,9 +131,9 @@
 
   <!-- Countdown Script -->
   <script>
-    const targetDate = new Date("2025-01-02T10:00:00").getTime(); // Atur waktu pengumuman
+    const targetDate = new Date("2025-02-02T10:00:00").getTime(); // Atur waktu pengumuman
     const countdown = document.getElementById("countdown");
-    const formNis = document.getElementById("form-nis");
+    const formNisn = document.getElementById("form-nisn");
     const sectionCountdown = document.getElementById("countdown-section");
 
     const timer = setInterval(() => {
@@ -144,7 +144,7 @@
         clearInterval(timer);
         countdown.innerHTML = "🎉 Pengumuman Sudah Tersedia!";
         countdown.classList.add("text-green-300");
-        formNis.classList.remove("hidden");
+        formNisn.classList.remove("hidden");
       } else {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -181,30 +181,6 @@
 
   <!-- Kelulusan Pop-up -->
   <script>
-    const dataKelulusan = {
-  "123456": {
-    nama: "Fachri Shofiyyuddin Ahmad",
-    tgl_lahir: "28 Mei 2000",
-    asal_sekolah: "MTs NU Al Hidayah",
-    kota: "Semarang",
-    provinsi: "Jawa Tengah",
-    foto: "https://media.licdn.com/dms/image/v2/D5603AQERB3tSNqFatA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1699941081332?e=1752710400&v=beta&t=G0ZuGo8tkMxyQnCfj8dwJIzps65YgWgv7umFAJwuKmI",
-    lulus: true  // <--- properti lulus di sini
-  },
-
-  "654321": {
-    nama: "Keira Amalia",
-    tgl_lahir: "1 Januari 2001",
-    asal_sekolah: "MTs NU Al Hidayah",
-    kota: "Jakarta Selatan",
-    provinsi: "DKI Jakarta",
-    foto: "https://i.pinimg.com/736x/3f/b2/84/3fb2846c21ed34306837bea8d9529753.jpg",
-    lulus: false  // siswa ini tidak lulus
-  }
-};
-
-
-
     // Audio efek ledakan mercon (bisa ganti link sesuai kebutuhan)
 const audioMercon = new Audio('audio/mercon.mp3');
 
@@ -223,83 +199,88 @@ function efekMerconKertas() {
 }
 
 function cekKelulusan() {
-  const nis = document.getElementById("nis").value.trim();
-  if (dataKelulusan[nis]) {
-    const siswa = dataKelulusan[nis];
+  const nisn = document.getElementById("nisn").value.trim();
+  fetch('data/data-kelulusan.json')  // pastikan path benar
+      .then(response => response.json())
+      .then(dataKelulusan => {
+        if (dataKelulusan[nisn]) {
 
-    if (siswa.lulus) {
-  // Putar suara dan efek sebelum modal muncul
-  audioMercon.currentTime = 0;
-  audioMercon.play();
-  efekMerconKertas();
+          const siswa = dataKelulusan[nisn]; // ✅ Tambahkan ini
 
-  // Tampilkan modal setelah delay singkat agar efek jalan dulu
-  setTimeout(() => {
-    Swal.fire({
-      title: '',
-      html: `
-        <div style="
-          font-family: 'Segoe UI', sans-serif;
-          background: linear-gradient(to bottom right, #e6f4ea, #ffffff);
-          padding: 10px;
-          border-radius: 12px;
-          color: #065f46;
-          text-align: center;
-        ">
-          <div style="margin-bottom: 16px;">
-            <div style="font-size: 48px;">🎓</div>
-            <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Selamat, Anda Lulus!</h2>
-            <p style="font-size: 16px; font-weight: 600; color: #064e3b; margin: 2px 0;">MTs NU Al Hidayah</p>
-            <p style="font-size: 15px; color: #064e3b;">Tahun Ajaran 2024/2025</p>
-          </div>
+          if (siswa.lulus) {
+        // Putar suara dan efek sebelum modal muncul
+        audioMercon.currentTime = 0;
+        audioMercon.play();
+        efekMerconKertas();
 
-          <div style="margin: 20px auto;">
-            <div style="
-              width: 100px;
-              height: 100px;
-              border-radius: 50%;
-              padding: 5px;
-              background: linear-gradient(135deg, #16a34a, #4ade80);
-              margin: 0 auto;
-              box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            ">
-              <img src="${siswa.foto}" alt="Foto Siswa" style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 50%;
-                border: 3px solid #fff;
+        // Tampilkan modal setelah delay singkat agar efek jalan dulu
+        setTimeout(() => {
+          Swal.fire({
+            title: '',
+            html: `
+              <div style="
+                font-family: 'Segoe UI', sans-serif;
+                background: linear-gradient(to bottom right, #e6f4ea, #ffffff);
+                padding: 10px;
+                border-radius: 12px;
+                color: #065f46;
+                text-align: center;
               ">
-            </div>
-          </div>
+                <div style="margin-bottom: 16px;">
+                  <div style="font-size: 48px;">🎓</div>
+                  <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Selamat, Anda Lulus!</h2>
+                  <p style="font-size: 16px; font-weight: 600; color: #064e3b; margin: 2px 0;">MTs NU Al Hidayah</p>
+                  <p style="font-size: 15px; color: #064e3b;">Tahun Ajaran 2024/2025</p>
+                </div>
 
-          <div style="
-            margin-top: 5px;
-            padding: 16px;
-            border-radius: 12px;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.6);
-            display: inline-block;
-            text-align: left;
-            font-size: 15px;
-            color: #064e3b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-          ">
-            <p><strong>Nama:</strong> ${siswa.nama}</p>
-            <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
-            <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
-            <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
-            <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
-          </div>
-        </div>
-      `,
-      confirmButtonText: '🎉 Tutup',
-      confirmButtonColor: '#16a34a',
-      background: '#ecfdf5',
-      width: 480
-    });
-  }, 500); // delay setengah detik agar efek terasa lebih dahulu
-} else {
+                <div style="margin: 20px auto;">
+                  <div style="
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    padding: 5px;
+                    background: linear-gradient(135deg, #16a34a, #4ade80);
+                    margin: 0 auto;
+                    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+                  ">
+                    <img src="${siswa.foto}" alt="Foto Siswa" style="
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      border-radius: 50%;
+                      border: 3px solid #fff;
+                    ">
+                  </div>
+                </div>
+
+                <div style="
+                  margin-top: 5px;
+                  padding: 16px;
+                  border-radius: 12px;
+                  backdrop-filter: blur(8px);
+                  background: rgba(255, 255, 255, 0.6);
+                  display: inline-block;
+                  text-align: left;
+                  font-size: 15px;
+                  color: #064e3b;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                ">
+                   <p><strong>Nomor Peserta:</strong> ${siswa.peserta}</p>
+                  <p><strong>Nama:</strong> ${siswa.nama}</p>
+                  <p><strong>Kelas:</strong> ${siswa.kelas}</p>
+                  <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
+                  <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
+                  <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
+                </div>
+              </div>
+            `,
+            confirmButtonText: '🎉 Tutup',
+            confirmButtonColor: '#16a34a',
+            background: '#ecfdf5',
+            width: 480
+          });
+        }, 500); // delay setengah detik agar efek terasa lebih dahulu
+      } else {
       // POPUP GAK LULUS WARNA MERAH
       Swal.fire({
         title: '',
@@ -352,11 +333,12 @@ function cekKelulusan() {
               color: #7f1d1d;
               box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             ">
+              <p><strong>Nomor Peserta:</strong> ${siswa.peserta}</p>
               <p><strong>Nama:</strong> ${siswa.nama}</p>
+              <p><strong>Kelas:</strong> ${siswa.kelas}</p>
               <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
               <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
               <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
-              <p><strong>Provinsi:</strong> ${siswa.provinsi}</p>
             </div>
           </div>
         `,
@@ -370,20 +352,22 @@ function cekKelulusan() {
   } else {
     Swal.fire({
       icon: 'error',
-      title: 'NIS Tidak Ditemukan',
-      text: 'Pastikan NIS yang Anda masukkan benar.',
+      title: 'NISN Tidak Ditemukan',
+      text: 'Pastikan NISN yang Anda masukkan benar.',
       confirmButtonColor: '#ef4444'
-    });
+    })
   }
+  })
+      .catch(error => {
+        console.error('Gagal memuat data:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Kesalahan',
+          text: 'Tidak dapat memuat data kelulusan.',
+          confirmButtonColor: '#ef4444'
+        });
+      });
 }
-
-
-
-
-
-
-
-
   </script>
 
 </body>
