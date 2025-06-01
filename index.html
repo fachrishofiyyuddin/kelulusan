@@ -283,70 +283,80 @@ function cekKelulusan() {
       } else {
       // POPUP GAK LULUS WARNA MERAH
       Swal.fire({
-        title: '',
-        html: `
-          <div style="
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to bottom right, #fee2e2, #fef2f2);
-            padding: 10px;
-            border-radius: 12px;
-            color: #b91c1c;
-            text-align: center;
+  title: '',
+  html: `
+    <div style="
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #fee2e2, #fef2f2);
+      padding: 20px;
+      border-radius: 16px;
+      color: #b91c1c;
+      text-align: center;
+    ">
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 50px;">😞</div>
+        <h2 style="font-size: 24px; font-weight: 700; margin: 12px 0 6px;">
+          Mohon Maaf Anda Belum Dinyatakan Lulus
+        </h2>
+        <p style="font-size: 16px; font-weight: 600; margin: 0 0 8px;">
+          Silakan hubungi Wali Kelas Anda
+        </p>
+        <p style="font-size: 15px; font-weight: 600; color: #991b1b; margin: 0;">
+          MTs NU Al Hidayah
+        </p>
+        <p style="font-size: 14px; color: #991b1b; margin: 2px 0 0;">
+          Tahun Ajaran 2024/2025
+        </p>
+      </div>
+
+      <div style="margin: 20px auto;">
+        <div style="
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          padding: 4px;
+          background: linear-gradient(135deg, #dc2626, #f87171);
+          margin: 0 auto;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        ">
+          <img src="${siswa.foto}" alt="Foto Siswa" style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
           ">
-            <div style="margin-bottom: 16px;">
-              <div style="font-size: 48px;">😞</div>
-              <h2 style="font-size: 28px; font-weight: 700; margin: 4px 0;">Mohon Maaf, Anda Tidak Lulus</h2>
-              <!-- Tambahan subjudul di sini -->
-              <p style="font-size: 16px; font-weight: 600; color: #991b1b; margin: 2px 0;">MTs NU Al Hidayah</p>
-              <p style="font-size: 15px; color: #991b1b;">Tahun Ajaran 2024/2025</p>
-            </div>
+        </div>
+      </div>
 
-            <div style="margin: 20px auto;">
-              <div style="
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                padding: 5px;
-                background: linear-gradient(135deg, #dc2626, #f87171);
-                margin: 0 auto;
-                box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-              ">
-                <img src="${siswa.foto}" alt="Foto Siswa" style="
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  border-radius: 50%;
-                  border: 3px solid #fff;
-                ">
-              </div>
-            </div>
+      <div style="
+        margin-top: 20px;
+        padding: 16px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        text-align: left;
+        font-size: 14px;
+        color: #7f1d1d;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      ">
+        <p><strong>Nama:</strong> ${siswa.nama}</p>
+        <p><strong>Nomor Peserta:</strong> ${siswa.peserta}</p>
+        <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
+        <p><strong>Kelas 9:</strong> ${siswa.kelas}</p>
+        <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
+        <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
+      </div>
+    </div>
+  `,
+  confirmButtonText: 'Tutup',
+  confirmButtonColor: '#b91c1c',
+  background: '#fee2e2',
+  width: 500,
+});
 
-            <div style="
-              margin-top: 5px;
-              padding: 16px;
-              border-radius: 12px;
-              backdrop-filter: blur(8px);
-              background: rgba(255, 255, 255, 0.6);
-              display: inline-block;
-              text-align: left;
-              font-size: 15px;
-              color: #7f1d1d;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            ">
-              <p><strong>Nama:</strong> ${siswa.nama}</p>
-              <p><strong>Nomor Peserta:</strong> ${siswa.peserta}</p>
-              <p><strong>Tanggal Lahir:</strong> ${siswa.tgl_lahir}</p>
-              <p><strong>Kelas 9:</strong> ${siswa.kelas}</p>
-              <p><strong>Asal Sekolah:</strong> ${siswa.asal_sekolah}</p>
-              <p><strong>Kab/Kota:</strong> ${siswa.kota}</p>
-            </div>
-          </div>
-        `,
-        confirmButtonText: 'Tutup',
-        confirmButtonColor: '#b91c1c',
-        background: '#fee2e2',
-        width: 480,
-      });
     }
 
   } else {
